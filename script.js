@@ -55,4 +55,33 @@ def set_png_size(data, num_str, unit):
             const base64Data = btoa(String.fromCharCode.apply(null, fileData));
             
             let result;
-            try
+            try {
+                result = await pyodide.runPythonAsync(`
+data = base64.b64decode("${base64Data}")
+output = set_png_size(data, "${size}", "${unit}")
+output
+                `);
+                const processedData = atob(result);
+                const byteArray = new Uint8Array(processedData.length);
+                for (let i = 0; i < processedData.length; i++) {
+                    byteArray[i] = processedData.charCodeAt(i);
+                }
+
+                const blob = new Blob([byteArray], { type: 'image/png' });
+                const url = URL.createObjectURL(blob);
+                downloadLink.href = url;
+                downloadLink.download = 'processed_image.png';
+                downloadLink.style.display = 'block';
+                downloadLink.innerText = 'Download Processed File';
+
+                outputElement.innerText = 'Processing complete.';
+            } catch (error) {
+                outputElement.innerText = `Error: ${error.message}`;
+            }
+        };
+        fileReader.readAsArrayBuffer(inputFile);
+    });
+}
+
+// Initialize the Pyodide runtime
+main();
