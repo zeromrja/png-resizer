@@ -8,8 +8,23 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Python Loader</h1>
-    <button id="runPythonButton">Run Python</button>
-    <pre id="pythonOutput"></pre>
+    <h1>PNG Size Adjuster</h1>
+    <input type="file" id="inputFile" accept=".png">
+    <br>
+    <label for="size">Enter target size:</label>
+    <input type="number" id="size" placeholder="Size">
+    <br>
+    <label for="unit">Select unit:</label>
+    <select id="unit">
+        <option value="bytes">Bytes</option>
+        <option value="kilobytes">Kilobytes</option>
+        <option value="megabytes">Megabytes</option>
+        <option value="gigabytes">Gigabytes</option>
+    </select>
+    <br>
+    <button id="processButton">Process PNG</button>
+    <br>
+    <a id="downloadLink" style="display: none;">Download Processed File</a>
+    <pre id="output"></pre>
 </body>
 </html>
