@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Loader with Pyodide</title>
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+    <title>Python PNG Size Adjuster</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.21.0/full/pyodide.js"></script>
     <script src="script.js" defer></script>
+    <style>
+        #progress {
+            width: 100%;
+            height: 30px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <h1>PNG Size Adjuster</h1>
@@ -24,7 +32,8 @@
     <br>
     <button id="processButton">Process PNG</button>
     <br>
+    <progress id="progress" value="0" max="100"></progress>
+    <div id="status" style="margin-top: 10px;"></div>
     <a id="downloadLink" style="display: none;">Download Processed File</a>
-    <pre id="output"></pre>
 </body>
 </html>

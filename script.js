@@ -16,10 +16,11 @@ def convert_size_to_bytes(num_str, unit):
     elif unit == 'gigabytes':
         return num * 1024 * 1024 * 1024
     else:
-        raise ValueError("Unidad de tamaño no reconocida.")
+        raise ValueError("Unrecognized size unit.")
 
-def set_png_size(data, num_str, unit):
+def set_png_size(base64_data, num_str, unit):
     try:
+        data = base64.b64decode(base64_data)
         target_size = convert_size_to_bytes(num_str, unit)
     except ValueError as e:
         return f"Error al convertir el tamaño: {str(e)}"
@@ -37,48 +38,71 @@ def set_png_size(data, num_str, unit):
 
     await pyodide.runPythonAsync(pythonCode);
 
+    const progress = document.getElementById('progress');
+    const status = document.getElementById('status');
+    const downloadLink = document.getElementById('downloadLink');
+
+    function arrayBufferToBase64(buffer) {
+        let binary = '';
+        const bytes = new Uint8Array(buffer);
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+    }
+
+    function base64ToUint8Array(base64) {
+        const binaryString = atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes;
+    }
+
     document.getElementById('processButton').addEventListener('click', async () => {
         const inputFile = document.getElementById('inputFile').files[0];
         const size = document.getElementById('size').value;
         const unit = document.getElementById('unit').value;
-        const outputElement = document.getElementById('output');
-        const downloadLink = document.getElementById('downloadLink');
 
         if (!inputFile || !size || !unit) {
-            outputElement.innerText = "Please provide all inputs.";
+            status.innerText = "Please provide all inputs.";
             return;
         }
 
         const fileReader = new FileReader();
         fileReader.onload = async (event) => {
-            const fileData = new Uint8Array(event.target.result);
-            const base64Data = btoa(String.fromCharCode.apply(null, fileData));
-            
-            let result;
+            const fileData = event.target.result;
+            const base64Data = arrayBufferToBase64(fileData);
+
             try {
-                result = await pyodide.runPythonAsync(`
-data = base64.b64decode("${base64Data}")
-output = set_png_size(data, "${size}", "${unit}")
+                progress.style.display = 'block';
+                progress.value = 0;
+                status.innerText = 'Processing...';
+
+                const result = await pyodide.runPythonAsync(`
+output = set_png_size("${base64Data}", "${size}", "${unit}")
 output
                 `);
-                const processedData = atob(result);
-                const byteArray = new Uint8Array(processedData.length);
-                for (let i = 0; i < processedData.length; i++) {
-                    byteArray[i] = processedData.charCodeAt(i);
-                }
 
-                const blob = new Blob([byteArray], { type: 'image/png' });
+                const processedData = base64ToUint8Array(result);
+                const blob = new Blob([processedData], { type: 'image/png' });
                 const url = URL.createObjectURL(blob);
                 downloadLink.href = url;
                 downloadLink.download = 'processed_image.png';
                 downloadLink.style.display = 'block';
                 downloadLink.innerText = 'Download Processed File';
 
-                outputElement.innerText = 'Processing complete.';
+                progress.style.display = 'none';
+                status.innerText = 'Processing complete.';
             } catch (error) {
-                outputElement.innerText = `Error: ${error.message}`;
+                status.innerText = `Error: ${error.message}`;
+                progress.style.display = 'none';
             }
         };
+
         fileReader.readAsArrayBuffer(inputFile);
     });
 }
