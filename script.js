@@ -13,10 +13,8 @@ def convert_size_to_bytes(num_str, unit):
         return num * 1024
     elif unit == 'megabytes':
         return num * 1024 * 1024
-    elif unit == 'gigabytes':
-        return num * 1024 * 1024 * 1024
     else:
-        raise ValueError("Unrecognized size unit.")
+        raise ValueError("Unidad de tamaño no reconocida.")
 
 def set_png_size(base64_data, num_str, unit):
     try:

@@ -1,0 +1,12 @@
+{
+    "title": "Ajustador de tamaño PNG",
+    "selectPng":"Selecciona un archivo PNG",
+    "text1":"Tamaño deseado",
+    "text2":"Unidad:",
+    "processButton": "Procesar PNG",
+    "downloadLink": "Descargar archivo procesado",
+    "twitter": "Twitter:",
+    "youtube": "YouTube:",
+    "instagram": "Instagram:",
+    "backBtn": "Atrás"
+}

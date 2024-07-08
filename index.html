@@ -4,36 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Python PNG Size Adjuster</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/pyodide/v0.21.0/full/pyodide.js"></script>
     <script src="script.js" defer></script>
-    <style>
-        #progress {
-            width: 100%;
-            height: 30px;
-            margin-top: 10px;
-            display: none;
-        }
-    </style>
 </head>
 <body>
-    <h1>PNG Size Adjuster</h1>
-    <input type="file" id="inputFile" accept=".png">
-    <br>
-    <label for="size">Enter target size:</label>
-    <input type="number" id="size" placeholder="Size">
-    <br>
-    <label for="unit">Select unit:</label>
-    <select id="unit">
-        <option value="bytes">Bytes</option>
-        <option value="kilobytes">Kilobytes</option>
-        <option value="megabytes">Megabytes</option>
-        <option value="gigabytes">Gigabytes</option>
-    </select>
-    <br>
-    <button id="processButton">Process PNG</button>
-    <br>
-    <progress id="progress" value="0" max="100"></progress>
-    <div id="status" style="margin-top: 10px;"></div>
-    <a id="downloadLink" style="display: none;">Download Processed File</a>
+    <div class="container">
+        <h1 id="title">PNG Size Adjuster</h1>
+        <div class="form-group">
+            <label for="inputFile" class="custom-file-label" id="selectPng">Select a PNG file</label>
+            <input type="file" id="inputFile" accept=".png">
+        </div>
+        <div class="form-group">
+            <label for="size" id="text1">Enter target size:</label>
+            <input type="number" id="size" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="unit" id="text2">Select unit</label>
+            <select id="unit">
+                <option value="bytes">Bytes</option>
+                <option value="kilobytes">Kilobytes</option>
+                <option value="megabytes">Megabytes</option>
+            </select>
+        </div>
+        <button id="processButton">Process PNG</button>
+        <progress id="progress" value="0" max="100"></progress>
+        <div id="status"></div>
+        <a id="downloadLink">Download Processed File</a>
+
+        <div class="custom-select-container">
+        <select id="languageSelect">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+        </select>
+        <div class="custom-arrow"></div>
+    </div>
+
+    <script src="idioma.js"></script>
+<div class="social-links">
+    <div class="social-link">
+        <p><span class="network twitter" id="twitter">Twitter:</span> <a href="https://twitter.com/zeromrja" class="social-icon" target="_blank">@zeromrja</a></p>
+    </div>
+<div class="social-link">
+    <p><span class="network youtube" id="youtube">YouTube:</span> <a href="https://youtube.com/@zeromrja" class="social-icon" target="_blank">@zeromrja</a></p>
+</div>
+    <div class="social-link">
+        <p><span class="network instagram" id="instagram">Instagram:</span> <a href="https://instagram.com/zeromrja" class="social-icon" target="_blank">@zeromrja</a></p>
+    </div>
+</div>
+     <a href="javascript:history.back()" class="back-link" id="backBtn">Back</a>
+    </div>
 </body>
 </html>

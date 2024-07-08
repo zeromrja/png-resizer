@@ -1,0 +1,12 @@
+{
+    "title": "PNG Size Adjuster",
+    "selectPng":"Select a PNG file",
+    "text1":"Enter target size:",
+    "text2":"Select unit:",
+    "processButton": "Process PNG",
+    "downloadLink": "Download Processed File",
+    "twitter": "Twitter:",
+    "youtube": "YouTube:",
+    "instagram": "Instagram:",
+    "backBtn": "Back"
+}
